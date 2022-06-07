@@ -6,6 +6,7 @@ const userController = {};
 userController.createUser = async (req, res, next) => {
   //outgoing on success: res.locals.username
   try {
+    console.log(`Entered userController.createUser middleware`);
     const { username, password, email } = req.body;
     res.locals.username = username;
     res.locals.password = password;
@@ -29,6 +30,7 @@ userController.createUser = async (req, res, next) => {
  */
 userController.verifyUser = async (req, res, next) => {
   try {
+    console.log(`Entered userController.verifyUser middleware`);
     const { username, password } = req.body;
     res.locals.username = username;
     res.locals.password = password;
@@ -52,6 +54,7 @@ userController.isLoggedIn = async (req, res, next) => {
   //incoming: res.locals.username, res.locals.activeSSID
   //outoing: res.locals.username, res.locals.activeSSID, res.locals.isLoggedIn
   try {
+    console.log(`Entered userController.isLoggedIn middleware`);
     //INPUT DATABASE LOGIC HERE
     //check username and activeSSID versus active session table to determine if user should be logged in
     //if they should be logged in, set res.locals.isLoggedIn to true
@@ -72,6 +75,7 @@ userController.logout = async (req, res, next) => {
   //incoming: res.locals.username, res.locals.activeSSID
 
   try {
+    console.log(`Entered userController.logout middleware`);
     //Delete user record from activeSessions database table
     //INPUT DATABASE LOGIC HERE
 
