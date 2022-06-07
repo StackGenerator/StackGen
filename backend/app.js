@@ -29,12 +29,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 //End test endpoint
 
 app.use('/users', usersRouter);
-app.use('/project', projectsRouter);
+app.use('/projects', projectsRouter);
 
 //RJ - ENDPOINT CODE END========================
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
