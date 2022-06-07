@@ -7,6 +7,7 @@ projectController.getProjects = (req, res, next) => {
   //incoming: res.locals.username, res.locals.activeSSID, res.locals.isLoggedIn
   //outgoing: //incoming: res.locals.username, res.locals.activeSSID, res.locals.isLoggedIn, res.locals.projectList
   try {
+    console.log(`Entered projectController.getProjects middleware`);
     if (res.locals.isLoggedIn) {
       //Retrieve project list for a user
       //INPUT DATABASE LOGIC HERE
@@ -31,6 +32,7 @@ projectController.addProject = (req, res, next) => {
   //incoming: res.locals.username, res.locals.activeSSID, res.locals.isLoggedIn
   //outgoing: res.locals.username, res.locals.activeSSID, res.locals.isLoggedIn
   try {
+    console.log(`Entered projectController.addProject middleware`);
     if (res.locals.isLoggedIn) {
       //Add project to list for a user
       //INPUT DATABASE LOGIC HERE
@@ -56,6 +58,7 @@ projectController.deleteProject = (req, res, next) => {
   //outgoing: //incoming: res.locals.username, res.locals.activeSSID, res.locals.isLoggedIn, res.locals.projectName
 
   try {
+    console.log(`Entered projectController.deleteProject middleware`);
     if (res.locals.isLoggedIn) {
       const { projectName } = req.body;
       res.locals.projectName = projectName;
@@ -80,6 +83,7 @@ projectController.deleteProject = (req, res, next) => {
  */
 projectController.updateProject = (req, res, next) => {
   try {
+    console.log(`Entered projectController.updateProject middleware`);
     if (res.locals.isLoggedIn) {
       const { projectName } = req.body;
       res.locals.projectName = projectName;

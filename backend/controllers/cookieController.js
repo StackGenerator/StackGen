@@ -7,12 +7,13 @@ const cookieController = {};
  */
 cookieController.setCookies = (req, res, next) => {
   //incoming: res.locals.username
-  //outgoing if successful: res.locals.username, res.locals.ssid
+  //outgoing if successful: res.locals.username, res.locals.activeSSID
   try {
+    console.log(`Entered cookieController.setCookies middleware`);
     res.cookie('username', res.locals.username);
     let ssid = Math.floor(Math.random() * 100000); //setting session id for a user to make sure cookie information is linked to active user
     res.cookie('ssid', ssid);
-    res.locals.ssid = ssid;
+    res.locals.activeSSID = ssid;
 
     //Update activeSessions database table with the username and active session id
     //INPUT DATABASE LOGIC HERE
@@ -35,6 +36,7 @@ cookieController.getCookies = (req, res, next) => {
   //outgoing if successful: res.locals.username, res.locals.activeSSID
 
   try {
+    console.log(`Entered cookieController.getCookies middleware`);
     //using cookie-parser which populates req.cookies object to retrieve cookie info
     res.locals.username = req.cookies.username;
     res.locals.activeSSID = req.cookies.ssid;
@@ -54,6 +56,7 @@ cookieController.deleteCookies = (req, res, next) => {
   //incoming: res.locals.username, res.locals.activeSSID
 
   try {
+    console.log(`Entered cookieController.deleteCookies middleware`);
     //using express clearCookie method to remove cookies from browser
     res.clearCookie('username');
     res.clearCookie('ssid');
