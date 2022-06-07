@@ -17,7 +17,7 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser()); //every request moves through cookieParser - req.cookies populates {cookiename: value, cookiename: value}
 app.use(express.static(path.join(__dirname, 'public')));
 
 //RJ - ENDPOINT CODE BEGIN========================
@@ -46,6 +46,15 @@ app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  //logging error message
+  const defaultErr = {
+    log: 'Express error handler caught unknown middleware error',
+    status: 500,
+    message: { err: 'An error occurred' },
+  };
+  const errorObj = Object.assign({}, defaultErr, err);
+  console.log(errorObj.log);
 
   // render the error page
   res.status(err.status || 500);

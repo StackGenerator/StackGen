@@ -2,37 +2,61 @@ var express = require('express');
 var router = express.Router();
 const cookieController = require('../controllers/cookieController');
 const projectController = require('../controllers/projectController');
+const userController = require('../controllers/userController');
 
-/* GET project list for a user. */
-// router.get('/', function(req, res, next) {
-//   res.send('respond with a resource');
-// });
+//getCookies and setCookies middleware will both populate
+//res.locals.username and res.locals.activeSSID
+//so these will be available to later middleware functions
 
 /* GET project list for a user. */
 // '/projects/login',
 router.get(
   '/',
-  cookieController.getCookie,
+  cookieController.getCookies,
+  userController.isLoggedIn,
   projectController.getProjects,
-  function (req, res, next) {}
+  function (req, res, next) {
+    return res.status(200).json(res.locals.projectList);
+  }
 );
 
-/* Update project list for a user. */
+/* Add project to list list for a user. */
 // '/projects/login',
 router.post(
   '/',
-  cookieController.getCookie,
-  projectController.setProject,
-  function (req, res, next) {}
+  cookieController.getCookies,
+  userController.isLoggedIn,
+  projectController.addProject,
+  projectController.getProjects,
+  function (req, res, next) {
+    return res.status(200).json(res.locals.projectList);
+  }
 );
 
 /* Update project list for a user. */
 // '/projects/login',
-// router.delete(
-//   '/',
-//   cookieController.getCookie,
-//   projectController.setProject,
-//   function (req, res, next) {}
-// );
+router.patch(
+  '/',
+  cookieController.getCookies,
+  userController.isLoggedIn,
+  projectController.updateProject,
+  projectController.getProjects,
+  function (req, res, next) {
+    return res.status(200).json(res.locals.projectList);
+  }
+);
+
+/* Delete project from user list. */
+// '/projects/login',
+router.delete(
+  '/',
+  cookieController.getCookies,
+  userController.isLoggedIn,
+  projectController.updateProject,
+  projectController.getProjects,
+  function (req, res, next) {
+    return res.status(200).json(res.locals.projectList);
+  }
+);
 
 module.exports = router;
