@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var projectsRouter = require('./routes/projects');
 
 var app = express();
 
@@ -19,16 +20,29 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//RJ - ENDPOINT CODE BEGIN========================
+
+//Test endpoint - localhost:9000 (running sever port) will send the response back
+// app.get('/login', (req, res) => {
+//   return res.status(200).send('Testing');
+// });
+//End test endpoint
+
+app.use('/users', usersRouter);
+app.use('/project', projectsRouter);
+
+//RJ - ENDPOINT CODE END========================
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
