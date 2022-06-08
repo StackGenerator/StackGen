@@ -20,6 +20,7 @@ const Heading = styled.h1`
 const ResultsContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 20%;
   margin: 0.4rem 0;
   padding: 0.4rem 2rem;
   font-weight: 500;
