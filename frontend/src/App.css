@@ -1,5 +1,9 @@
 a {
-  text-decoration: none;
-  color: inherit;
+  /* text-decoration: none;
+  color: inherit; */
   margin: 0 1.5rem;
+}
+
+legend {
+  font-weight: 600;
 }
