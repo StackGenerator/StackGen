@@ -16,4 +16,4 @@ There is an overabundance of technologies that can be used to build a fullstack 
 
 StackGen is a web application that asks users a series of questions about the application they want to build, then provides a suggested tech stack for them to consider using and to research further into.
 
-Our application is a simple all-in-one tool where you can take advantage of the knowledge of experience engineers to give yourself confidence in the technologies you choose for your fullstack application.
+Our application is a simple all-in-one tool where you can take advantage of the knowledge of experienced engineers to give yourself confidence in the technologies you choose for your fullstack application.
