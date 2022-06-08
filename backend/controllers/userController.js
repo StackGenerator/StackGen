@@ -1,5 +1,5 @@
 const userController = {};
-const db = require("../db.js");
+const db = require('../db.js');
 /**
  * createUser - create and save a new User into the database.
  */
@@ -11,6 +11,9 @@ userController.createUser = async (req, res, next) => {
     res.locals.username = username;
     res.locals.password = password;
     res.locals.email = email;
+    console.log(
+      `${res.locals.username} ${res.locals.password} ${res.locals.email}`
+    );
     //Create user in the database
     //INPUT DATABASE LOGIC HERE
     const queryString = `INSERT INTO "user" (user_name, password, email) VALUES ($1, $2, $3)`;
@@ -22,6 +25,8 @@ userController.createUser = async (req, res, next) => {
       }
     });
     //END DATABASE LOGIC
+    console.log('Leaving userController.createUser Database Logic Succesfully');
+    next();
   } catch (err) {
     return next({
       log: `ERROR: userController.createUser: ${err}`,
@@ -48,6 +53,7 @@ userController.verifyUser = async (req, res, next) => {
     console.log(dbPassword.rows);
     if (!dbPassword.rows[0]) return res.send('Username does not exist');
     else console.log('user & password match!');
+    //EMD DATABASE LOGIC HERE
     next();
   } catch (err) {
     return next({
@@ -63,18 +69,32 @@ userController.verifyUser = async (req, res, next) => {
  */
 userController.isLoggedIn = async (req, res, next) => {
   //incoming: res.locals.username, res.locals.activeSSID
-  const { username, SSID } = req.body;
   //outoing: res.locals.username, res.locals.activeSSID, res.locals.isLoggedIn
+  const username = res.locals.username;
+  const SSID = res.locals.activeSSID;
+
+  // const { username, SSID } = req.body;
+
   try {
     console.log(`Entered userController.isLoggedIn middleware`);
     //INPUT DATABASE LOGIC HERE
-    //check username and activeSSID versus active session table to determine if user should be logged in
+    // check username and activeSSID versus active session table to determine if user should be logged in
     const queryString = `SELECT cookie FROM cookie WHERE user_name='${username}'`;
     const sessionSSID = await db.query(queryString);
-    //if they should be logged in, set res.locals.isLoggedIn to true
-    if(sessionSSID === SSID) res.locals.isLoggedIn = true;
-    //username cookie and activesSSID...if these match the database activeSession information....set isLoggedIn (res.locals.isLoggedIn) to true
+    console.log(`reslocals activeSSID ${SSID}.....querySSID ${sessionSSID}`);
+    console.log(sessionSSID);
+    console.log(SSID);
+    // if they should be logged in, set res.locals.isLoggedIn to true
+    if (Number(sessionSSID.rows[0].cookie) === Number(SSID)) {
+      console.log('active session id matches');
+      res.locals.isLoggedIn = true;
+    } else {
+      res.locals.isLoggedIn = false;
+    }
+    // username cookie and activesSSID...if these match the database activeSession information....set isLoggedIn (res.locals.isLoggedIn) to true
     //END DATABASE LOGIC
+    console.log('Leaving userController.isLoggedIn Succesfully');
+
     return next();
   } catch (err) {
     return next({
@@ -94,8 +114,8 @@ userController.logout = async (req, res, next) => {
     console.log(`Entered userController.logout middleware`);
     //Delete user record from activeSessions database table
     //INPUT DATABASE LOGIC HERE
-    const queryString = `DELETE FROM cookie WHERE user_name='${username}'`
-    db.query(queryString);
+    const queryString = `DELETE FROM cookie WHERE user_name='${username}'`;
+    await db.query(queryString);
     //END DATABASE LOGIC
     return next();
   } catch (err) {
