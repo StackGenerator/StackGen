@@ -71,7 +71,10 @@ const Profile = () => {
   const handleDelete = (projName) => {
     fetch(`/projects/${projName}`, {
       method: 'DELETE',
-    }).then(() => setInvalidate((prevState) => !prevState));
+    })
+      .then((res) => res.json())
+      // .then((data) => setProjectsData(data));
+      .then(() => setInvalidate((prevState) => !prevState));
   };
 
   const projects = projectsData.map((el, index) => {
