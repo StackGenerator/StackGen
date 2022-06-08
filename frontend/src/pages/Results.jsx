@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { TotalsContext } from '../App';
 import styled from 'styled-components';
-import { Button, Modal, Group } from '@mantine/core';
+import { Button, Modal, TextInput } from '@mantine/core';
 import LoginModal from '../components/LoginModal';
 
 const Wrapper = styled.div`
@@ -38,8 +38,9 @@ const TechName = styled.span`
 
 const Results = () => {
   const [opened, setOpened] = useState(false);
+  const [projectName, setProjectName] = useState('');
   const totals = useContext(TotalsContext);
-  console.log(totals.totalScores);
+
   const [results, setResults] = useState({
     frontend: '',
     css: '',
@@ -73,7 +74,6 @@ const Results = () => {
         choice = key;
       }
     });
-    console.log(choice);
 
     setResults((prevState) => {
       return { ...prevState, frontend: choice };
@@ -108,7 +108,6 @@ const Results = () => {
 
   const setCSS = (cssScores) => {
     if (cssScores[1][0] === 'yes') {
-      console.log(cssScores[2][0]);
       setResults((prevState) => {
         return { ...prevState, css: cssScores[2][0] };
       });
@@ -152,23 +151,58 @@ const Results = () => {
     setDatabase(totals.totalScores.database);
     setUnit(totals.totalScores.devops);
     setEnd(totals.totalScores.devops);
-    console.log(results);
   }, []);
 
   const handleSave = () => {
-    fetch('/users/login', {
+    fetch('/projects', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: totals.currentUser }),
+      body: JSON.stringify({
+        username: totals.currentUser,
+        projName: projectName,
+        techStack: {
+          frontend: results.frontend,
+          css: results.css,
+          runtime: results.runtime,
+          buildtool: 'webpack',
+          database: results.database,
+          unit: results.unit,
+          e2e: results.end,
+        },
+      }),
     })
       .then((res) => res.json())
-      .then((data) => totals.setIsLoggedIn(data.isLoggedIn));
+      .then((data) => console.log(data));
+  };
+
+  const handleTextChange = (e) => {
+    setProjectName(e.target.value);
   };
 
   return (
     <Wrapper>
       <Heading>RESULTS</Heading>
 
+      {totals.isLoggedIn && (
+        <>
+          <TextInput
+            placeholder="Project Name"
+            label="Save your project as:"
+            radius="md"
+            style={{ width: '500px' }}
+            required
+            onChange={handleTextChange}
+          />
+          <Button
+            color="cyan"
+            radius="md"
+            size="md"
+            style={{ marginTop: '1rem', marginBottom: '2rem' }}
+            onClick={handleSave}>
+            Save Your Results
+          </Button>
+        </>
+      )}
       <ResultsContainer>
         Frontend Framework:
         <TechName>{results.frontend}</TechName>
@@ -176,6 +210,10 @@ const Results = () => {
       <ResultsContainer>
         CSS Framework:
         <TechName>{results.css}</TechName>
+      </ResultsContainer>
+      <ResultsContainer>
+        Buildtool:
+        <TechName>Webpack</TechName>
       </ResultsContainer>
       <ResultsContainer>
         Runtime Environment:
@@ -203,22 +241,12 @@ const Results = () => {
           Login to Save
         </Button>
       )}
-      {totals.isLoggedIn && (
-        <Button
-          color="cyan"
-          radius="md"
-          size="md"
-          style={{ marginTop: '1rem', marginBottom: '4rem' }}
-          onClick={handleSave}>
-          Save Your Results
-        </Button>
-      )}
 
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}
         title="Login to save your results!">
-        <LoginModal />
+        <LoginModal setOpened={setOpened} />
       </Modal>
     </Wrapper>
   );

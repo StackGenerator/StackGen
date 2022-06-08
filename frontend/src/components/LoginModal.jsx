@@ -12,7 +12,7 @@ const BtnWrapper = styled.div`
   gap: 0.5rem;
 `;
 
-const LoginModal = () => {
+const LoginModal = ({ setOpened }) => {
   const totals = useContext(TotalsContext);
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
@@ -25,7 +25,10 @@ const LoginModal = () => {
     })
       .then((res) => res.json())
       .then((data) => totals.setIsLoggedIn(data.isLoggedIn))
-      .then(() => totals.setCurrentUser(username));
+      .then(() => totals.setCurrentUser(username))
+      .then(() => {
+        setOpened(false);
+      });
   };
 
   const handleSignup = () => {
