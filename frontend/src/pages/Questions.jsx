@@ -7,6 +7,15 @@ import DatabaseContent from '../components/DatabaseContent';
 import DevOpsContent from '../components/DevOpsContent';
 import FrontendContent from '../components/FrontendContent';
 import RuntimeContent from '../components/RuntimeContent';
+import styled from 'styled-components';
+import SubmitContent from '../components/SubmitContent';
+
+const StepperStyles = {
+  backgroundColor: 'white',
+  borderRadius: '10px',
+  padding: '1rem',
+  boxShadow: '0 1px 5px 0.2px rgba(0, 0, 0, 0.1)',
+};
 
 const Questions = () => {
   const navigate = useNavigate();
@@ -44,45 +53,48 @@ const Questions = () => {
         onStepClick={setActive}
         breakpoint="sm"
         color="cyan"
-        style={{ width: 'screen', margin: '3rem 5rem' }}
-        styles={{
-          stepProgress: { color: '#15aabf' },
-        }}>
+        style={{ width: 'screen', margin: '3rem 5rem' }}>
         <Stepper.Step
           label="Frontend"
           description=""
-          allowStepSelect={active > 0}>
+          allowStepSelect={active > 0}
+          style={StepperStyles}>
           <FrontendContent setFrontendValues={setFrontendValues} />
         </Stepper.Step>
         <Stepper.Step
+          style={StepperStyles}
           label="CSS Frameworks"
           description=""
           allowStepSelect={active > 1}>
           <CSSContent setCssValues={setCssValues} />
         </Stepper.Step>
         <Stepper.Step
+          style={StepperStyles}
           label="Runtime Environment"
           description=""
           allowStepSelect={active > 2}>
           <RuntimeContent setRuntimeValues={setRuntimeValues} />
         </Stepper.Step>
         <Stepper.Step
+          style={StepperStyles}
           label="Database"
           description=""
           allowStepSelect={active > 3}>
           <DatabaseContent setDatabaseValues={setDatabaseValues} />
         </Stepper.Step>
         <Stepper.Step
+          style={StepperStyles}
           label="DevOps"
           description=""
           allowStepSelect={active > 4}>
           <DevOpsContent setDevOpsValues={setDevOpsValues} />
         </Stepper.Step>
         <Stepper.Step
+          style={StepperStyles}
           label="Submit"
           description=""
           allowStepSelect={active > 5}>
-          Ready to see your results?
+          <SubmitContent />
         </Stepper.Step>
         <Stepper.Completed>Here is your suggested tech stack</Stepper.Completed>
       </Stepper>
