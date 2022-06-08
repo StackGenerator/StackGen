@@ -1,3 +1,5 @@
+const db = require("../db");
+
 const cookieController = {};
 
 //Should be able to leverage npm cookie-parser library
@@ -5,9 +7,10 @@ const cookieController = {};
 /**
  * setCookie - set a cookie with an expiration date
  */
-cookieController.setCookies = (req, res, next) => {
+cookieController.setCookies = async (req, res, next) => {
   //incoming: res.locals.username
   //outgoing if successful: res.locals.username, res.locals.activeSSID
+  const { username } = req.body;
   try {
     console.log(`Entered cookieController.setCookies middleware`);
     res.cookie('username', res.locals.username);
@@ -17,8 +20,14 @@ cookieController.setCookies = (req, res, next) => {
 
     //Update activeSessions database table with the username and active session id
     //INPUT DATABASE LOGIC HERE
-
-    //END DATABASE LOGIC
+    const queryString = `INSERT INTO cookie (user_name, cookie) VALUES ($1, $2)`
+    const values = [username, ssid];
+    await db.query(queryString, values, (err, res) => {
+      if (err) {
+        console.log('ERROR WITH DB QUERY');
+        console.log(err.stack);
+      }
+    });
 
     return next();
   } catch (err) {
