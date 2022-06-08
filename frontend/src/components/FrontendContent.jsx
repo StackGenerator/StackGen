@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -7,7 +7,6 @@ const Wrapper = styled.div`
   align-items: flex-start;
   margin: 2rem 30%;
   gap: 40px;
-  z-index: -20;
 `;
 const Form = styled.div`
   display: flex;
@@ -18,82 +17,56 @@ const frontendQandA = [
   {
     question: 'Which is more important: flexibility, or comprehensiveness?',
     answer1: 'Flexibility',
-    value1: [['React', 1]],
+    value1: ['react'],
     answer2: 'Comprehensiveness',
-    value2: [['Angular', 1]],
+    value2: ['angular'],
   },
   {
     question: 'Do you know or want to learn TypeScript?',
     answer1: 'Yes',
-    value1: [['Angular', 1]],
+    value1: ['angular'],
     answer2: 'No',
-    value2: [['Angular', -2]],
+    value2: ['svelte', 'svelte', 'react', 'react', 'vue', 'vue'],
   },
   {
     question:
       'Which is more important: an easy learning curve or a robust ecosystem?',
     answer1: 'Learning curve',
-    value1: [
-      ['Svelte', 1],
-      ['Vue', 1],
-    ],
+    value1: ['svelte', 'vue'],
     answer2: 'Ecosystem/developer tooling',
-    value2: [
-      ['React', 1],
-      ['Angular', 1],
-    ],
+    value2: ['react', 'angular'],
   },
   {
     question: 'How important is performance (speed)?',
     answer1: 'The most important thing',
-    value1: [
-      ['Svelte', 2],
-      ['Vue', 1],
-    ],
+    value1: ['svelte', 'svelte', 'vue'],
     answer2: 'One factor among many',
-    value2: [['React', 1]],
+    value2: ['react'],
   },
   {
     question: 'Which is more important: current popularity or trajectory?',
     answer1: 'Current popularity',
-    value1: [
-      ['React', 2],
-      ['Angular', 1],
-      ['Vue', 1],
-    ],
+    value1: ['react', 'react', 'angular', 'vue'],
     answer2: 'Trajectory',
-    value2: [['Svelte', 1]],
+    value2: ['svelte'],
   },
 ];
 
-const initialState = {
-  0: [],
-  1: [],
-  2: [],
-  3: [],
-  4: [],
-};
-
-const FrontendContent = () => {
-  const [frontendValues, setFrontendValues] = useState(initialState);
-
-  const handleChange = (e, index) => {
-    let values = e.target.value;
+const FrontendContent = ({ setFrontendValues }) => {
+  const handleChange = async (e, index) => {
+    let values = e.target.value.split(',');
     const newState = {
       [index]: values,
     };
     setFrontendValues((prevState) => {
       return { ...prevState, ...newState };
     });
-
-    console.log(typeof values);
   };
 
   const content = frontendQandA.map((el, index) => {
-    let question = `${index + 1}. ${el.question} `;
     return (
       <Form onChange={(e) => handleChange(e, index)} key={index}>
-        <legend>{question}</legend>
+        <legend>{el.question}</legend>
         <div style={{ display: 'flex', marginTop: '0.5rem' }}>
           <input
             type="radio"

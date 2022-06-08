@@ -1,5 +1,5 @@
 const userController = {};
-
+const db = require('../db.js');
 /**
  * createUser - create and save a new User into the database.
  */
@@ -11,10 +11,22 @@ userController.createUser = async (req, res, next) => {
     res.locals.username = username;
     res.locals.password = password;
     res.locals.email = email;
+    console.log(
+      `${res.locals.username} ${res.locals.password} ${res.locals.email}`
+    );
     //Create user in the database
     //INPUT DATABASE LOGIC HERE
-
+    const queryString = `INSERT INTO "user" (user_name, password, email) VALUES ($1, $2, $3)`;
+    const value = [username, password, email];
+    db.query(queryString, value, (err, res) => {
+      if (err) {
+        console.log('ERROR WITH DB QUERY');
+        console.log(err.stack);
+      }
+    });
     //END DATABASE LOGIC
+    console.log('Leaving userController.createUser Database Logic Succesfully');
+    next();
   } catch (err) {
     return next({
       log: `ERROR: userController.createUser: ${err}`,
@@ -36,8 +48,13 @@ userController.verifyUser = async (req, res, next) => {
     res.locals.password = password;
     //Check database for existence of user and appropriate password
     //INPUT DATABASE LOGIC HERE
-
-    //END DATABASE LOGIC
+    const queryString = `SELECT password FROM "user" WHERE user_name='${username}'`;
+    const dbPassword = await db.query(queryString);
+    console.log(dbPassword.rows);
+    if (!dbPassword.rows[0]) return res.send('Username does not exist');
+    else console.log('user & password match!');
+    //EMD DATABASE LOGIC HERE
+    next();
   } catch (err) {
     return next({
       log: `ERROR: userController.verifyUser: ${err}`,
@@ -53,13 +70,32 @@ userController.verifyUser = async (req, res, next) => {
 userController.isLoggedIn = async (req, res, next) => {
   //incoming: res.locals.username, res.locals.activeSSID
   //outoing: res.locals.username, res.locals.activeSSID, res.locals.isLoggedIn
+  const username = res.locals.username;
+  const SSID = res.locals.activeSSID;
+
+  // const { username, SSID } = req.body;
+
   try {
     console.log(`Entered userController.isLoggedIn middleware`);
     //INPUT DATABASE LOGIC HERE
-    //check username and activeSSID versus active session table to determine if user should be logged in
-    //if they should be logged in, set res.locals.isLoggedIn to true
-    //username cookie and activesSSID...if these match the database activeSession information....set isLoggedIn (res.locals.isLoggedIn) to true
+    // check username and activeSSID versus active session table to determine if user should be logged in
+    const queryString = `SELECT cookie FROM cookie WHERE user_name='${username}'`;
+    const sessionSSID = await db.query(queryString);
+    console.log(`reslocals activeSSID ${SSID}.....querySSID ${sessionSSID}`);
+    console.log(sessionSSID);
+    console.log(SSID);
+    // if they should be logged in, set res.locals.isLoggedIn to true
+    if (Number(sessionSSID.rows[0].cookie) === Number(SSID)) {
+      console.log('active session id matches');
+      res.locals.isLoggedIn = true;
+    } else {
+      res.locals.isLoggedIn = false;
+    }
+    // username cookie and activesSSID...if these match the database activeSession information....set isLoggedIn (res.locals.isLoggedIn) to true
     //END DATABASE LOGIC
+    console.log('Leaving userController.isLoggedIn Succesfully');
+
+    return next();
   } catch (err) {
     return next({
       log: `ERROR: userController.isLoggedIn: ${err}`,
@@ -73,14 +109,14 @@ userController.isLoggedIn = async (req, res, next) => {
  */
 userController.logout = async (req, res, next) => {
   //incoming: res.locals.username, res.locals.activeSSID
-
+  const { username } = res.locals;
   try {
     console.log(`Entered userController.logout middleware`);
     //Delete user record from activeSessions database table
     //INPUT DATABASE LOGIC HERE
-
+    const queryString = `DELETE FROM cookie WHERE user_name='${username}'`;
+    await db.query(queryString);
     //END DATABASE LOGIC
-
     return next();
   } catch (err) {
     return next({
