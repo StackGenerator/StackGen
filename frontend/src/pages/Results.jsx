@@ -3,6 +3,7 @@ import { TotalsContext } from '../App';
 import styled from 'styled-components';
 import { Button, Modal, TextInput } from '@mantine/core';
 import LoginModal from '../components/LoginModal';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   display: flex;
@@ -37,6 +38,7 @@ const TechName = styled.span`
 `;
 
 const Results = () => {
+  const navigate = useNavigate();
   const [opened, setOpened] = useState(false);
   const [projectName, setProjectName] = useState('');
   const totals = useContext(TotalsContext);
@@ -172,7 +174,7 @@ const Results = () => {
       }),
     })
       .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then(() => navigate('/profile'));
   };
 
   const handleTextChange = (e) => {
@@ -213,7 +215,7 @@ const Results = () => {
       </ResultsContainer>
       <ResultsContainer>
         Buildtool:
-        <TechName>Webpack</TechName>
+        <TechName>webpack</TechName>
       </ResultsContainer>
       <ResultsContainer>
         Runtime Environment:

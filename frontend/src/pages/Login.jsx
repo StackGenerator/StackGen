@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Input, InputWrapper, PasswordInput, Button } from '@mantine/core';
 import styled from 'styled-components';
 import { TotalsContext } from '../App';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   display: flex;
@@ -28,6 +29,8 @@ const BtnWrapper = styled.div`
 `;
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const totals = useContext(TotalsContext);
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
@@ -40,7 +43,8 @@ const Login = () => {
     })
       .then((res) => res.json())
       .then((data) => totals.setIsLoggedIn(data.isLoggedIn))
-      .then(() => totals.setCurrentUser(username));
+      .then(() => totals.setCurrentUser(username))
+      .then(() => navigate('/profile'));
   };
 
   const handleSignup = () => {
@@ -51,7 +55,8 @@ const Login = () => {
     })
       .then((res) => res.json())
       .then((data) => totals.setIsLoggedIn(data.isLoggedIn))
-      .then(() => totals.setCurrentUser(username));
+      .then(() => totals.setCurrentUser(username))
+      .then(() => navigate('/profile'));
   };
 
   return (

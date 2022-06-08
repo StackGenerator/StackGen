@@ -47,9 +47,9 @@ const HomePage = () => {
           <Title>StackGen</Title>
         </Link>
         <div>
-          {/* <Anchor component={Link} to="/questions" style={{ color: 'white' }}>
-            Questions
-          </Anchor> */}
+          <Anchor component={Link} to="/questions" style={{ color: 'white' }}>
+            Questionnaire
+          </Anchor>
           {/* <Anchor component={Link} to="/results" style={{ color: 'white' }}>
             Results
           </Anchor> */}
