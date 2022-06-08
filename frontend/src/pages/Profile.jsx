@@ -74,9 +74,10 @@ const Profile = () => {
   }, [totals.username]);
 
   const handleDelete = (projName) => {
-    // fetch('/projects', {
-    //   method: 'DELETE',
-    // });
+    console.log(projName);
+    fetch(`/projects/${projName}`, {
+      method: 'DELETE',
+    });
   };
 
   const projects = projectsData.map((el, index) => {
@@ -114,7 +115,8 @@ const Profile = () => {
           color="red"
           radius="md"
           style={{ marginTop: '0.5rem' }}
-          onClick={() => handleDelete(el.projName)}>
+          onClick={() => handleDelete(el.project_name)}
+        >
           Delete
         </Button>
       </Accordion.Item>
