@@ -35,12 +35,6 @@ const Wrapper = styled.div`
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 1px 10px 0.2px rgba(0, 0, 0, 0.1);
-
-  /* position: absolute;
-  left: 50%;
-  top: 50%; */
-  /* -webkit-transform: translate(-50%, -50%); */
-  /* transform: translate(-50%, -50%); */
 `;
 const Container = styled.div`
   width: screen;
@@ -62,6 +56,7 @@ const Category = styled.span`
 const Profile = () => {
   const totals = useContext(TotalsContext);
   const [projectsData, setProjectsData] = useState([]);
+  const [invalidate, setInvalidate] = useState(false);
 
   useEffect(() => {
     fetch('/projects', {
@@ -71,13 +66,12 @@ const Profile = () => {
       .then((res) => res.json())
       .then((data) => setProjectsData(data))
       .then(() => console.log(projectsData));
-  }, [totals.username]);
+  }, [totals.username, invalidate]);
 
   const handleDelete = (projName) => {
-    console.log(projName);
     fetch(`/projects/${projName}`, {
       method: 'DELETE',
-    });
+    }).then(() => setInvalidate((prevState) => !prevState));
   };
 
   const projects = projectsData.map((el, index) => {
@@ -115,8 +109,7 @@ const Profile = () => {
           color="red"
           radius="md"
           style={{ marginTop: '0.5rem' }}
-          onClick={() => handleDelete(el.project_name)}
-        >
+          onClick={() => handleDelete(el.project_name)}>
           Delete
         </Button>
       </Accordion.Item>
