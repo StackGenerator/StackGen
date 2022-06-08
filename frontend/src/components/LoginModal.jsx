@@ -2,23 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Input, InputWrapper, PasswordInput, Button } from '@mantine/core';
 import styled from 'styled-components';
 import { TotalsContext } from '../App';
-import { useNavigate } from 'react-router-dom';
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 40%;
-  /* border: 1px solid black; */
-  padding: 2rem;
-  box-shadow: 0 1px 10px 0.2px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  background-color: white;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-`;
 const BtnWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -28,9 +12,7 @@ const BtnWrapper = styled.div`
   gap: 0.5rem;
 `;
 
-const Login = () => {
-  const navigate = useNavigate();
-
+const LoginModal = ({ setOpened }) => {
   const totals = useContext(TotalsContext);
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
@@ -44,7 +26,9 @@ const Login = () => {
       .then((res) => res.json())
       .then((data) => totals.setIsLoggedIn(data.isLoggedIn))
       .then(() => totals.setCurrentUser(username))
-      .then(() => navigate('/profile'));
+      .then(() => {
+        setOpened(false);
+      });
   };
 
   const handleSignup = () => {
@@ -55,12 +39,11 @@ const Login = () => {
     })
       .then((res) => res.json())
       .then((data) => totals.setIsLoggedIn(data.isLoggedIn))
-      .then(() => totals.setCurrentUser(username))
-      .then(() => navigate('/profile'));
+      .then(() => totals.setCurrentUser(username));
   };
 
   return (
-    <Wrapper>
+    <>
       <InputWrapper
         id="input-demo"
         required
@@ -92,8 +75,8 @@ const Login = () => {
           Sign Up
         </Button>
       </BtnWrapper>
-    </Wrapper>
+    </>
   );
 };
 
-export default Login;
+export default LoginModal;

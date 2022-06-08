@@ -23,7 +23,7 @@ const initialScores = {
 
 function App() {
   const [totalScores, setTotalScores] = useState(initialScores);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState();
   const totals = {
     totalScores,
