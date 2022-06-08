@@ -61,16 +61,16 @@ const Category = styled.span`
 
 const Profile = () => {
   const totals = useContext(TotalsContext);
-  const [projectsData, setProjectsData] = useState();
+  const [projectsData, setProjectsData] = useState([]);
 
   useEffect(() => {
     fetch('/projects', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: totals.username }),
     })
       .then((res) => res.json())
-      .then((data) => setProjectsData(data));
+      .then((data) => setProjectsData(data))
+      .then(() => console.log(projectsData));
   }, [totals.username]);
 
   const handleDelete = (projName) => {
@@ -79,36 +79,36 @@ const Profile = () => {
     // });
   };
 
-  const projects = sampleProjectList.map((el) => {
+  const projects = projectsData.map((el, index) => {
     return (
-      <Accordion.Item label={el.projName}>
+      <Accordion.Item label={el.project_name} key={index}>
         <div>
           <Category>Frontend: </Category>
-          {el.techStack.frontend}
+          {el.frontend}
         </div>
         <div>
           <Category>CSS Framework: </Category>
-          {el.techStack.css}
+          {el.css}
         </div>
         <div>
           <Category>JS Runtime: </Category>
-          {el.techStack.runtime}
+          {el.runtime}
         </div>
         <div>
           <Category>Build Tool: </Category>
-          {el.techStack.buildtool}
+          {el.buildtool}
         </div>
         <div>
           <Category>Database: </Category>
-          {el.techStack.database}
+          {el.database}
         </div>
         <div>
           <Category>Unit Testing: </Category>
-          {el.techStack.unit}
+          {el.unit}
         </div>
         <div>
           <Category>E2E Testing: </Category>
-          {el.techStack.e2e}
+          {el.e2e}
         </div>
         <Button
           color="red"

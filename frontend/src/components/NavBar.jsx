@@ -47,12 +47,12 @@ const HomePage = () => {
           <Title>StackGen</Title>
         </Link>
         <div>
-          <Anchor component={Link} to="/questions" style={{ color: 'white' }}>
+          {/* <Anchor component={Link} to="/questions" style={{ color: 'white' }}>
             Questions
-          </Anchor>
-          <Anchor component={Link} to="/results" style={{ color: 'white' }}>
+          </Anchor> */}
+          {/* <Anchor component={Link} to="/results" style={{ color: 'white' }}>
             Results
-          </Anchor>
+          </Anchor> */}
           {!totals.isLoggedIn && (
             <Anchor component={Link} to="/login" style={{ color: 'white' }}>
               Login
