@@ -7,66 +7,53 @@ const Wrapper = styled.div`
   align-items: flex-start;
   margin: 2rem 30%;
   gap: 40px;
+  z-index: -20;
 `;
 const Form = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const frontendQandA = [
+const runtimeQandA = [
   {
-    question: 'Which is more important: flexibility, or comprehensiveness?',
-    answer1: 'Flexibility',
-    value1: ['react'],
-    answer2: 'Comprehensiveness',
-    value2: ['angular'],
+    question: 'Centralized package manager or stronger dependency inspector?',
+    answer1: 'Centralized package manager',
+    value1: ['node'],
+    answer2: 'Stronger dependency inspector',
+    value2: ['deno'],
   },
   {
-    question: 'Do you know or want to learn TypeScript?',
-    answer1: 'Yes',
-    value1: ['angular'],
-    answer2: 'No',
-    value2: ['svelte', 'svelte', 'react', 'react', 'vue', 'vue'],
+    question: 'Better security or faster development time?',
+    answer1: 'Better security',
+    value1: ['deno'],
+    answer2: 'Faster development time',
+    value2: ['node'],
   },
   {
-    question:
-      'Which is more important: an easy learning curve or a robust ecosystem?',
-    answer1: 'Learning curve',
-    value1: ['svelte', 'vue'],
-    answer2: 'Ecosystem/developer tooling',
-    value2: ['react', 'angular'],
-  },
-  {
-    question: 'How important is performance (speed)?',
-    answer1: 'The most important thing',
-    value1: ['svelte', 'svelte', 'vue'],
-    answer2: 'One factor among many',
-    value2: ['react'],
-  },
-  {
-    question: 'Which is more important: current popularity or trajectory?',
-    answer1: 'Current popularity',
-    value1: ['react', 'react', 'angular', 'vue'],
-    answer2: 'Trajectory',
-    value2: ['svelte'],
+    question: 'Popular and tried-and-tested or new and up-and-coming?',
+    answer1: 'Popular and tried-and-tested',
+    value1: ['node', 'node'],
+    answer2: 'New and up-and-coming',
+    value2: ['deno'],
   },
 ];
 
-const FrontendContent = ({ setFrontendValues }) => {
+const RuntimeContent = ({ setRuntimeValues }) => {
   const handleChange = async (e, index) => {
     let values = e.target.value.split(',');
     const newState = {
       [index]: values,
     };
-    setFrontendValues((prevState) => {
+    setRuntimeValues((prevState) => {
       return { ...prevState, ...newState };
     });
   };
 
-  const content = frontendQandA.map((el, index) => {
+  const content = runtimeQandA.map((el, index) => {
+    let question = `${index + 1}. ${el.question} `;
     return (
       <Form onChange={(e) => handleChange(e, index)} key={index}>
-        <legend>{el.question}</legend>
+        <legend>{question}</legend>
         <div style={{ display: 'flex', marginTop: '0.5rem' }}>
           <input
             type="radio"
@@ -95,4 +82,4 @@ const FrontendContent = ({ setFrontendValues }) => {
   return <Wrapper>{content}</Wrapper>;
 };
 
-export default FrontendContent;
+export default RuntimeContent;
