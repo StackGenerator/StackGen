@@ -50,6 +50,9 @@ router.post(
   cookieController.setCookies, //sets username and ssid cookie if user submitted correctly
   userController.isLoggedIn,
   function (req, res, next) {
+    console.log(
+      `End of new signup route - isLoggedIn: ${res.locals.isLoggedIn}`
+    );
     return res.status(200).json({ isLoggedIn: res.locals.isLoggedIn });
   }
 );
