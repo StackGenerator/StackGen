@@ -49,10 +49,10 @@ router.patch(
 /* Delete project from user list. */
 // '/projects/login',
 router.delete(
-  '/',
+  '/:proj',
   cookieController.getCookies,
   userController.isLoggedIn,
-  projectController.updateProject,
+  projectController.deleteProject,
   projectController.getProjects,
   function (req, res, next) {
     return res.status(200).json(res.locals.projectList);

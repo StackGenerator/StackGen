@@ -98,13 +98,16 @@ projectController.deleteProject = (req, res, next) => {
 
   try {
     console.log(`Entered projectController.deleteProject middleware`);
+    console.log(req.params);
     if (res.locals.isLoggedIn) {
-      const { projectName, username } = req.body;
+      // const { projectName, username } = req.body;
+      const projectName = req.params.proj;
+      const username = res.locals.username;
       res.locals.projectName = projectName;
       //Delete project from list for a user based on username and project name
       //INPUT DATABASE LOGIC HERE
-      // const queryString = `DELETE FROM project WHERE project_name='${projectName}' AND user_name='${username}'`;
-      // db.query(queryString);
+      const queryString = `DELETE FROM project WHERE project_name='${projectName}' AND user_name='${username}'`;
+      db.query(queryString);
       //END DATABASE LOGIC
     } else {
       throw new Error('User is not logged in');
