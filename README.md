@@ -7,7 +7,7 @@
 - <a href="https://www.postgresql.org/">PostgreSQL</a>
 - <a href="https://testing-library.com/docs/react-testing-library/intro/">React Testing Library</a>
 - <span>Authentication</span>
-- - <a href="https://mantine.dev/">Mantine</a>
+- <a href="https://mantine.dev/">Mantine</a>
 
 ## The Problem
 
